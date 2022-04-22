@@ -95,7 +95,8 @@ async def print_leaderboard(ctx):
 HELP_MESSAGE = """
 `+funny [int] [user]` \n +[int]  funny to pinged user \n
 `-funny [int] [user]` \n -[int]  funny to pinged user \n
-`+score` \n returns leaderboard
+`+score` \n returns leaderboard \n
+`+white` \n returns whitelist (bruh its a list of ints, what did you want) \n
 """
 
 @bot.command
@@ -103,7 +104,9 @@ HELP_MESSAGE = """
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def help(ctx: lightbulb.Context) -> None:
     embed = hikari.Embed(title="Help Command", colour=0x2495bd)
-    embed.add_field("Available Commands", HELP_MESSAGE)
+    embed.add_field("Everyone Commands", HELP_MESSAGE)
+    embed.add_field("Stas Commands", "`+wh [int]` \n add user with user id = [int] to whitelist \n"
+                                     "`-wh [int]` \n remove user with user id = [int] from whitelist")
     await ctx.respond(embed)
 
     
