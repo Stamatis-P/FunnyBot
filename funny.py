@@ -90,7 +90,7 @@ async def print_leaderboard(ctx):
     await ctx.respond(f"``` \n {tabulate(sorted_table.items(), headers=headers, tablefmt='grid')} \n ```")
 
 @bot.command
-@lightbulb.command("funniest", "Alter a users funny rating")
+@lightbulb.command("funniest", "Return user with highest funny rating")
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def see_funniest(ctx):
     funniest_user = max(table, key= lambda x: table[x]) #checks for user with the highest score
@@ -101,7 +101,7 @@ HELP_MESSAGE = """
 `-funny [int] [user]` \n -[int]  funny to pinged user \n
 `+score` \n returns leaderboard \n
 `+white` \n returns whitelist (bruh its a list of ints, what did you want) \n
-`+funniest` \n returns who the user with highest score is \n
+`+funniest` \n returns user with the highest funny rating \n
 """
 
 @bot.command
