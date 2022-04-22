@@ -1,9 +1,7 @@
 import asyncio
 
 import hikari
-import hikari.events.reaction_events
 import lightbulb
-from time import sleep
 from tabulate import tabulate
 
 table = {"Stamatis" : 1}
