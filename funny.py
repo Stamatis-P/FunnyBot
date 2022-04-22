@@ -53,11 +53,9 @@ async def change_funny(ctx):
 
     if ctx.author == ctx.options.target:    # check the author of the message is not the target
         await ctx.respond("Bruh.")
+        return
 
     if ctx.author.id not in whitelist:  #check the author is in the whitelist
-        if ctx.author.id == 201135827059867658:
-            await ctx.respond("Nah, you fell off.")
-            return
         await ctx.respond("Sorry, you're not funny.")
         return
 
@@ -89,14 +87,21 @@ async def change_funny(ctx):
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def print_leaderboard(ctx):
     sorted_table = dict(sorted(table.items(), key=lambda item: item[1], reverse=True))
-    await ctx.respond(f"``` \n {tabulate(sorted_table.items(), headers=headers)} \n ```")
+    await ctx.respond(f"``` \n {tabulate(sorted_table.items(), headers=headers, tablefmt='grid')} \n ```")
 
-
+@bot.command
+@lightbulb.command("funniest", "Alter a users funny rating")
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def see_funniest(ctx):
+    funniest_user = max(table, key= lambda x: table[x]) #checks for user with the highest score
+    await ctx.respond(f'The funniest user is {funniest_user} with a score of {table[funniest_user]}')
+    
 HELP_MESSAGE = """
 `+funny [int] [user]` \n +[int]  funny to pinged user \n
 `-funny [int] [user]` \n -[int]  funny to pinged user \n
 `+score` \n returns leaderboard \n
 `+white` \n returns whitelist (bruh its a list of ints, what did you want) \n
+`+funniest` \n returns who the user with highest score is \n
 """
 
 @bot.command
