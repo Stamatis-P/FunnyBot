@@ -87,7 +87,7 @@ async def change_funny(ctx):
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def print_leaderboard(ctx):
     sorted_table = dict(sorted(table.items(), key=lambda item: item[1], reverse=True))
-    await ctx.respond(f"``` \n {tabulate(sorted_table.items(), headers=headers)} \n ```")
+    await ctx.respond(f"``` \n {tabulate(sorted_table.items(), headers=headers, tablefmt='grid')} \n ```")
 
 @bot.command
 @lightbulb.command("funniest", "Alter a users funny rating")
