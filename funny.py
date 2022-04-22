@@ -13,7 +13,7 @@ whitelist = [254832150715564033, 142104644556947457, 203741575824670720, 1385043
 print(tabulate(table.items(), headers=headers))
 
 
-bot = lightbulb.BotApp(token="OTY2ODI3MjgxMjk1MjI4OTg4.YmHaEg.KVLrdtEOxzKDt0pkkcWIQrivzvw",
+bot = lightbulb.BotApp(token="",
                        default_enabled_guilds=(966828214745972787, 258769394606407681), #test server, Bepis Bros
                        prefix=("+", "-"),
                        help_class=None)
