@@ -42,6 +42,7 @@ async def add_to_whitelist(ctx):
 async def return_whitelist(ctx):
     await ctx.respond(whitelist)
 
+    
 @bot.command
 @lightbulb.option("target", "User to change funny rating", hikari.User)
 @lightbulb.option("number", "how much to change funny rating by", type=int)
@@ -105,4 +106,5 @@ async def help(ctx: lightbulb.Context) -> None:
     embed.add_field("Available Commands", HELP_MESSAGE)
     await ctx.respond(embed)
 
+    
 bot.run()
