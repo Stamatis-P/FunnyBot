@@ -8,9 +8,6 @@ table = {}
 headers = ["Name", "Score"]
 whitelist = [] # Discord ID's of whitelisted users
 
-print(tabulate(table.items(), headers=headers))
-
-
 bot = lightbulb.BotApp(token="",
                        default_enabled_guilds=(), # ID of guilds to be enabled on
                        prefix=("+", "-"),
