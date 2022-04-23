@@ -22,7 +22,7 @@ async def add_to_whitelist(ctx):
     if ctx.author.id == 142104644556947457:
         if ctx.options.id in whitelist:
             print("it's in there")
-            if  ctx.prefix == "-":
+            if ctx.prefix == "-":
                 whitelist.remove(ctx.options.id)
                 await ctx.respond("Theyre gone.")
         else:
@@ -42,7 +42,7 @@ async def add_to_whitelist(ctx):
 async def return_whitelist(ctx):
     await ctx.respond(whitelist)
 
-    
+
 @bot.command
 @lightbulb.option("target", "User to change funny rating", hikari.User)
 @lightbulb.option("number", "how much to change funny rating by", type=int)
@@ -51,25 +51,26 @@ async def return_whitelist(ctx):
 async def change_funny(ctx):
     username = ctx.options.target.username  # username of target from the options
 
-    if ctx.author == ctx.options.target:    # check the author of the message is not the target
+    if ctx.author == ctx.options.target:  # check the author of the message is not the target
         await ctx.respond("Bruh.")
         return
 
-    if ctx.author.id not in whitelist:  #check the author is in the whitelist
+    if ctx.author.id not in whitelist:  # check the author is in the whitelist
         await ctx.respond("Sorry, you're not funny.")
         return
 
-    if username not in table:   # add target to table if they are not yet
+    if username not in table:  # add target to table if they are not yet
         table[username] = 0
 
-    await ctx.event.message.add_reaction("👍")   #react to message with :thumbsup:
+    await ctx.event.message.add_reaction("👍")  # react to message with :thumbsup:
 
-    def check(reaction):    #checks that the message reacted to is correct and user is not reacting their own message
+    def check(reaction):  # checks that the message reacted to is correct and user is not reacting their own message
         return reaction.message_id == ctx.event.message_id and reaction.user_id != 966827281295228988 and reaction.user_id != ctx.author.id
 
     try:
         for i in range(2):
-            reaction = await bot.wait_for(hikari.events.reaction_events.ReactionEvent, predicate=check, timeout=30) #wait for reaction on message
+            reaction = await bot.wait_for(hikari.events.reaction_events.ReactionEvent, predicate=check,
+                                          timeout=30)  # wait for reaction on message
         if ctx.prefix == "+":
             table[username] = table[username] + ctx.options.number
             await ctx.respond(f"+{ctx.options.number} funny to {username}")
@@ -87,22 +88,33 @@ async def change_funny(ctx):
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def print_leaderboard(ctx):
     sorted_table = dict(sorted(table.items(), key=lambda item: item[1], reverse=True))
-    await ctx.respond(f"``` \n {tabulate(sorted_table.items(), headers=headers, tablefmt='grid')} \n ```")
+    await ctx.respond(f"```{tabulate(sorted_table.items(), headers=headers, tablefmt='presto')} \n ```")
+
 
 @bot.command
 @lightbulb.command("funniest", "Return user with highest funny rating")
 @lightbulb.implements(lightbulb.PrefixCommand)
 async def see_funniest(ctx):
-    funniest_user = max(table, key= lambda x: table[x]) #checks for user with the highest score
+    funniest_user = max(table, key=lambda x: table[x])  # checks for user with the highest score
     await ctx.respond(f'The funniest user is {funniest_user} with a score of {table[funniest_user]}')
-    
+
+
+@bot.command
+@lightbulb.command("lamest", "Return user with lowest funny rating")
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def see_funniest(ctx):
+    lamest_user = min(table, key=lambda x: table[x])  # checks for user with the highest score
+    await ctx.respond(f'The lamest user is {lamest_user} with a score of {table[lamest_user]}')
+
 HELP_MESSAGE = """
 `+funny [int] [user]` \n +[int]  funny to pinged user \n
 `-funny [int] [user]` \n -[int]  funny to pinged user \n
 `+score` \n returns leaderboard \n
 `+white` \n returns whitelist (bruh its a list of ints, what did you want) \n
 `+funniest` \n returns user with the highest funny rating \n
+`+lamest` \n returns user with the lowest funny rating \n
 """
+
 
 @bot.command
 @lightbulb.command("help", "Gets help for bot commands")
@@ -114,5 +126,5 @@ async def help(ctx: lightbulb.Context) -> None:
                                      "`-wh [int]` \n remove user with user id = [int] from whitelist")
     await ctx.respond(embed)
 
-    
+
 bot.run()
