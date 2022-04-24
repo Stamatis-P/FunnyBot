@@ -1,18 +1,3 @@
-import asyncio
-
-import hikari
-import lightbulb
-from tabulate import tabulate
-
-table = {}
-headers = ["Name", "Score"]
-whitelist = [] # Discord ID's of whitelisted users
-
-bot = lightbulb.BotApp(token="",
-                       default_enabled_guilds=(), # ID of guilds to be enabled on
-                       prefix=("+", "-"),
-                       help_class=None)
-
 
 @bot.command
 @lightbulb.option("id", "id to add/remove to/from whitelist", type=int)
@@ -65,7 +50,7 @@ async def change_funny(ctx):
     await ctx.event.message.add_reaction("👍")  # react to message with :thumbsup:
 
     def check(reaction):  # checks that the message reacted to is correct and user is not reacting their own message
-        return reaction.message_id == ctx.event.message_id and reaction.user_id != 966827281295228988 and reaction.user_id != ctx.author.id
+        return reaction.message_id == ctx.event.message_id and reaction.user_id != 966827281295228988 and reaction.user_id != ctx.author.id and reaction.user_id != ctx.options.target.id
 
     try:
         for i in range(2):
@@ -78,7 +63,7 @@ async def change_funny(ctx):
             table[username] = table[username] - ctx.options.number
             await ctx.respond(f"-{ctx.options.number} funny to {username}")
     except asyncio.TimeoutError:
-        await ctx.respond("Hm, guess no one important agrees with you.")
+        await ctx.respond("Hm, guess no one agrees with you.")
 
     print(table)
 
@@ -105,6 +90,7 @@ async def see_funniest(ctx):
 async def see_funniest(ctx):
     lamest_user = min(table, key=lambda x: table[x])  # checks for user with the highest score
     await ctx.respond(f'The lamest user is {lamest_user} with a score of {table[lamest_user]}')
+
 
 HELP_MESSAGE = """
 `+funny [int] [user]` \n +[int]  funny to pinged user \n
